@@ -11,15 +11,13 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 public class InitServer extends AbstractWebSocketMessageBrokerConfigurer {
 	
 	@Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-//        config.enableSimpleBroker("/secured/user/queue/specific-user");
-        config.setApplicationDestinationPrefixes("/app");
-    }
- 
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-         registry.addEndpoint("/chat").setAllowedOrigins("http://localhost:4200");
-         registry.addEndpoint("/chat").withSockJS();
-    }
+	 public void configureMessageBroker(MessageBrokerRegistry config) {
+	  config.enableSimpleBroker("/topic/", "/queue/");
+	  config.setApplicationDestinationPrefixes("/app");
+	 }
+	 
+	 @Override
+	 public void registerStompEndpoints(StompEndpointRegistry registry) {
+	  registry.addEndpoint("/greeting").addInterceptors(new HttpHandshakeInterceptor()).setAllowedOrigins("*");
+	 }
 }
