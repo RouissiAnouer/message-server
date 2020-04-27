@@ -51,23 +51,14 @@ public class UserController {
 		}
 	}
 
-	@MessageMapping("/chat")
-	@SendTo("/topic/messages")
-	public OutputMessage send(Message message) throws Exception {
-		System.out.println(message.getText());
-		String time = new SimpleDateFormat("HH:mm").format(new Date());
-		ChatEntity chat = ChatEntity.builder().idSender(Long.parseLong(message.getFrom()))
-				.message(message.getText()).timestamp(time).build();
-		chatRepository.save(chat);
-		return OutputMessage.builder().from(message.getFrom()).text(message.getText()).timeStamp(time).build();
-	}
-
 	@MessageMapping("/message/{id}")
 	public void processMessageFromClient(@Payload Message message, SimpMessageHeaderAccessor headerAccessor, @DestinationVariable("id") String id)
 			throws Exception {
-		String sessionId = headerAccessor.getSessionAttributes().get("sessionId").toString();
-		System.out.println(sessionId);
-		headerAccessor.setSessionId(sessionId);
+		String time = new SimpleDateFormat("HH:mm").format(new Date());
+		ChatEntity chat = ChatEntity.builder().idSender(Long.parseLong(message.getFrom()))
+				.message(message.getText()).idReceiver(Long.parseLong(id)).timestamp(time).build();
+		System.out.println(message.getText());
+		chatRepository.save(chat);
 		simpMessagingTemplate.convertAndSend("/topic/reply."+id, message);
 
 	}

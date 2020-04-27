@@ -18,6 +18,6 @@ public class InitServer extends AbstractWebSocketMessageBrokerConfigurer {
 	 
 	 @Override
 	 public void registerStompEndpoints(StompEndpointRegistry registry) {
-	  registry.addEndpoint("/greeting").addInterceptors(new HttpHandshakeInterceptor()).setAllowedOrigins("*").withSockJS();
+	  registry.addEndpoint("/greeting").setAllowedOrigins("*").withSockJS();
 	 }
 }
