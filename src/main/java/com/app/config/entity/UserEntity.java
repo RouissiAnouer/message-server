@@ -40,6 +40,8 @@ public class UserEntity implements Serializable {
     @Column(name="email")
     @Setter private String email;
 
+    @Column(name="userName")
+    @Setter private String userName;
 
 	@Column(name="password")
     @Setter private String password;  
@@ -101,6 +103,10 @@ public class UserEntity implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getUserName() {
+		return userName;
 	}
 
 }

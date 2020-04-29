@@ -8,11 +8,12 @@ import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
+@Service
 public class JwtTokenUtil implements Serializable {
 
 	/**
@@ -21,7 +22,7 @@ public class JwtTokenUtil implements Serializable {
 	private static final long serialVersionUID = 1001049562181105519L;
 	
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
-	@Value("${jwt.secret}")
+	@Value("anouerrouissi")
 	private String secret;
 	//retrieve username from jwt token
 	public String getUsernameFromToken(String token) {
