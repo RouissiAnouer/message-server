@@ -3,6 +3,7 @@ package com.app.config.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,15 +11,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.app.model.request.SignUpRequest;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "user_table")
+@SuperBuilder
 @NoArgsConstructor
 public class UserEntity implements Serializable {
 	
@@ -53,8 +59,9 @@ public class UserEntity implements Serializable {
 	@Column(name = "received")
 	@OneToMany(targetEntity=ChatEntity.class, mappedBy="idReceiver", fetch=FetchType.EAGER)
 	@Setter @Getter private Set<ChatEntity> received;
-  
-//	
+	
+	@ManyToOne(targetEntity=Role.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @Getter @Setter private Role role;
 	
 	@JoinColumn(name="idSender")
     public Set<ChatEntity> getChats() {
@@ -64,11 +71,7 @@ public class UserEntity implements Serializable {
 	public void setChats(Set<ChatEntity> chats) {
 		this.chats = chats;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -77,36 +80,31 @@ public class UserEntity implements Serializable {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
 	public String getLastName() {
 		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getUserName() {
 		return userName;
+	}
+
+	public static UserEntity of(SignUpRequest request) {
+		UserEntity entity = UserEntity.builder()
+				.email(request.getEmail())
+				.userName(request.getEmail())
+				.firstName(request.getFirstname())
+				.lastName(request.getLastname())
+				.password(request.getPassword())
+				.build();
+		return entity;
 	}
 
 }

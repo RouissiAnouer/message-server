@@ -6,10 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import lombok.extern.slf4j.Slf4j;
-
 @SpringBootApplication
-@Slf4j
 @ComponentScan
 @Configuration
 @EnableTransactionManagement
