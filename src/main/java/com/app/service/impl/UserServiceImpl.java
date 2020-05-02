@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.app.config.entity.Role;
 import com.app.config.entity.UserEntity;
-import com.app.exceptions.UserAlreadyExistAuthenticationException;
 import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
 import com.app.service.IUserService;
