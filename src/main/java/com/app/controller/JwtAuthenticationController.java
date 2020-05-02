@@ -52,7 +52,7 @@ public class JwtAuthenticationController {
 				.userName(userInfo.getUserName())
 				.expiredIn(jwtTokenUtil.getExpirationDateFromToken(token).toInstant().getEpochSecond())
 				.build();
-		return ResponseEntity.ok(response);
+		return new ResponseEntity<JwtResponse>(response, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
