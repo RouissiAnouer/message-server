@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,22 +41,14 @@ public class UserController {
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<UserEntity> getUser(HttpServletRequest r, @RequestParam String idUser) {
-		Optional<UserEntity> userOpt = userService.getUserbyId(Long.parseLong(idUser));
-		if (userOpt.isPresent()) {
-			return ResponseEntity.ok(userOpt.get());
+	@RequestMapping(method = RequestMethod.GET, path = "/userinfo")
+	public ResponseEntity<UserEntity> getUser(HttpServletRequest r, @RequestParam String email) {
+		UserEntity userOpt = userService.findByUsername(email);
+		if (userOpt != null) {
+			return ResponseEntity.ok(userOpt);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	}
-	
-	
-	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ResponseEntity<?> signUp(HttpServletRequest r, @RequestBody SignUpRequest request) throws Exception {
-		UserEntity response = userService.createUser(UserEntity.of(request), request.getRole());
-//		userService.createRole("USER");
-		return new ResponseEntity<UserEntity>(response, HttpStatus.OK);
 	}
 
 	@MessageMapping("/message/{id}")

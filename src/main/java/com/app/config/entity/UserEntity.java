@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -60,8 +60,8 @@ public class UserEntity implements Serializable {
 	@OneToMany(targetEntity=ChatEntity.class, mappedBy="idReceiver", fetch=FetchType.EAGER)
 	@Setter @Getter private Set<ChatEntity> received;
 	
-	@ManyToOne(targetEntity=Role.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @Getter @Setter private Role role;
+	@ManyToMany(targetEntity=Role.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @Getter @Setter private Set<Role> roles;
 	
 	@JoinColumn(name="idSender")
     public Set<ChatEntity> getChats() {

@@ -2,6 +2,7 @@ package com.app.service.impl;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.config.entity.Role;
 import com.app.config.entity.UserEntity;
+import com.app.exceptions.UserAlreadyExistAuthenticationException;
 import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
 import com.app.service.IUserService;
@@ -24,11 +26,22 @@ public class UserServiceImpl implements IUserService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
-	public UserEntity createUser(UserEntity user, String role) {
+	public UserEntity createUser(UserEntity user, String role) throws Exception {
+		boolean exist = userRepository.findByUserName(user.getUserName()).isPresent();
+		if (exist) 
+			throw new Exception(user.getUserName() + " already exist");
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		user.setRole(roleRepository.findByName(role));
+		if (!roleRepository.findByName(role).isPresent()) {
+			throw new Exception("missing role");
+		}
+		if (role.equalsIgnoreCase("ADMIN")) {
+			user.setRoles(new HashSet<>(roleRepository.findAll()));
+		} else {
+			Set<Role> roles = new HashSet<>();
+			roles.add(roleRepository.findByName(role).get());
+			user.setRoles(roles);
+		}
 		UserEntity userCreated = userRepository.save(user);
-		
 		return userCreated;
 	}
 
@@ -37,12 +50,12 @@ public class UserServiceImpl implements IUserService {
 		Optional<UserEntity> userOpt = userRepository.findById(idUser);
 		return userOpt;
 	}
-	
+
 	@Override
-    public UserEntity findByUsername(String username) {
-        Optional<UserEntity> userOpt = userRepository.findByUserName(username);
-        return userOpt.get();
-    }
+	public UserEntity findByUsername(String username) {
+		Optional<UserEntity> userOpt = userRepository.findByUserName(username);
+		return userOpt.get();
+	}
 
 	@Override
 	public void createRole(String string) {

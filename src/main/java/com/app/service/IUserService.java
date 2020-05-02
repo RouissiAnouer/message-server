@@ -6,7 +6,7 @@ import com.app.config.entity.UserEntity;
 
 public interface IUserService {
 	
-	UserEntity createUser(UserEntity user, String role);
+	UserEntity createUser(UserEntity user, String role) throws Exception;
 
 	Optional<UserEntity> getUserbyId(Long idUser);
 	

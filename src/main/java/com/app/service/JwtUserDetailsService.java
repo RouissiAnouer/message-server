@@ -32,7 +32,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException(username);
 
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-		grantedAuthorities.add(new SimpleGrantedAuthority(userOpt.get().getRole().getName()));
+		for (Role role : userOpt.get().getRoles()) {
+			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
 
 		return new User(userOpt.get().getUserName(), userOpt.get().getPassword(), grantedAuthorities);
 	}
