@@ -17,7 +17,7 @@ import com.app.model.Message;
 import com.app.repository.ChatRepository;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class ChatService {
 	
 	@Autowired

@@ -1,6 +1,7 @@
 package com.app.service.impl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,6 +61,12 @@ public class UserServiceImpl implements IUserService {
 	public void createRole(String string) {
 		Role role = new Role(string);
 		roleRepository.save(role);
+	}
+
+	@Override
+	public List<UserEntity> getAll() {
+		List<UserEntity> users = userRepository.findAll();
+		return users;
 	}
 
 }

@@ -13,5 +13,7 @@ public class Message {
     @Getter @Setter private String from;
 	@JsonProperty("text")
     @Getter @Setter private String text;
+	@JsonProperty("time")
+    @Getter @Setter private String time;
  
 }
