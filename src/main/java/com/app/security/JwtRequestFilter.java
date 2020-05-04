@@ -1,7 +1,6 @@
 package com.app.security;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ import com.app.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 
 @Component
-public class JwtRequestFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends OncePerRequestFilter  {
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
 	@Autowired
@@ -70,7 +69,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 					SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 				}
 			}
-		}
+		} 
 		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
 			response.setStatus(HttpServletResponse.SC_OK);
 		} else {
@@ -78,4 +77,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		}
 
 	}
+
 }
