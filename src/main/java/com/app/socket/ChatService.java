@@ -32,7 +32,8 @@ public class ChatService {
 		ChatEntity chat = ChatEntity.builder().idSender(Long.parseLong(message.getFrom()))
 				.message(message.getText()).idReceiver(Long.parseLong(id)).timestamp(time).build();
 		System.out.println(message.getText());
-		chatRepository.save(chat);
+		ChatEntity chatEntity = chatRepository.save(chat);
+		message.setId(chatEntity.getId());
 		simpMessagingTemplate.convertAndSend("/topic/reply."+id, message);
 
 	}
