@@ -29,7 +29,7 @@ public class JwtRequestFilter extends OncePerRequestFilter  {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		if (!request.getRequestURI().equalsIgnoreCase("/greeting/info")) {
+		if (!request.getRequestURI().equalsIgnoreCase("/chat/info")) {
 			response.setHeader("Access-Control-Allow-Origin", "*");
 			response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 			response.setHeader("Access-Control-Allow-Headers",
