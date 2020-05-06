@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.config.entity.UserEntity;
 import com.app.model.response.UserInfoResponse;
-import com.app.security.JwtTokenUtil;
 import com.app.service.IUserService;
 
 @RestController
@@ -27,8 +26,6 @@ public class UserController {
 	
 	@Autowired
 	IUserService userService;
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
 
 	@RequestMapping(method = RequestMethod.GET, path = "/userinfo")
 	public ResponseEntity<UserInfoResponse> getUser(HttpServletRequest r, @RequestParam String email) {

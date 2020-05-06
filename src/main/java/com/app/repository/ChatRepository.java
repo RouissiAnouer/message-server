@@ -13,7 +13,6 @@ public interface ChatRepository extends CrudRepository<ChatEntity, Long>{
 	
 	List<ChatEntity> findByIdReceiverAndIdSender(Long id, Long idTo);
 	
-	List<ChatEntity> findByIdSenderAndIdReceiver(Long id, Long idTo);
-	
+	List<ChatEntity> findByIdSenderAndIdReceiver(Long id, Long idTo);	
 
 }
