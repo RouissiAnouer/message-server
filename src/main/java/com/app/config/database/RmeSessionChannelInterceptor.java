@@ -31,9 +31,12 @@ public class RmeSessionChannelInterceptor implements ChannelInterceptor {
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 		MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
 		String requestTokenHeader = null;
+		String destination = null;
 		if (multiValueMap != null) {
 			if ((multiValueMap.get("Authorization") != null)) {
 				requestTokenHeader = multiValueMap.getFirst("Authorization");
+			} else if (multiValueMap.get("destination") != null) {
+				destination = multiValueMap.getFirst("destination");
 			}
 		}
 		
@@ -51,7 +54,7 @@ public class RmeSessionChannelInterceptor implements ChannelInterceptor {
 				System.out.println("JWT Token has expired");
 				return null;
 			}
-		} else {
+		} else if (destination != null && requestTokenHeader != null) {
 			System.out.println("Need to Be authenticated");
 			return null;
 		}
