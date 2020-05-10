@@ -68,6 +68,7 @@ public class ChatServiceImpl implements IChatService {
 			ChatUserObject obj = ChatUserObject.builder().avatar("assets/icon/img_avatar2.png").message(message)
 					.givenName(item.getFirstName()).familyName(item.getLastName()).status("CONNECTED").id(item.getId())
 					.counter(messagesNotRead[0])
+					.connected(item.getConnected()==1)
 					.build();
 			listOfChats.add(obj);
 		});

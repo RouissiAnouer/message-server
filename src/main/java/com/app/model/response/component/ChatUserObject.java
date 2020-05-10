@@ -14,4 +14,5 @@ public class ChatUserObject {
 	@Getter @Setter private String status;
 	@Getter @Setter private Long id;
 	@Getter @Setter private Long counter;
+	@Getter @Setter private boolean connected;
 }

@@ -52,6 +52,9 @@ public class UserEntity implements Serializable {
 	@Column(name="password")
     @Setter private String password;  
 	
+	@Column(name = "connected")
+	@Setter private Integer connected;
+	
 	@Column(name = "chats")
 	@OneToMany(targetEntity=ChatEntity.class, mappedBy="idSender", fetch=FetchType.EAGER)
 	private Set<ChatEntity> chats;
@@ -94,6 +97,10 @@ public class UserEntity implements Serializable {
 
 	public String getUserName() {
 		return userName;
+	}
+	
+	public Integer getConnected() {
+		return connected;
 	}
 
 	public static UserEntity of(SignUpRequest request) {
