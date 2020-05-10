@@ -1,4 +1,4 @@
-package com.app.config.database;
+package com.app.config.SessionChannel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.model.request.UpdateChatReadStatusRequest;
 import com.app.model.response.AllChatsResponse;
 import com.app.model.response.ChatMessageResponse;
 import com.app.service.IChatService;
@@ -33,6 +35,12 @@ public class ChatController {
 	public ResponseEntity<?> getChatList(HttpServletRequest r, @RequestParam String id) {
 		AllChatsResponse response = chatService.getAllChat(Long.parseLong(id));
 		return new ResponseEntity<AllChatsResponse>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, path = "/readchat")
+	public ResponseEntity<?> updateChatRead(HttpServletRequest r, @RequestBody UpdateChatReadStatusRequest ids) {
+		chatService.updateChatStatus(ids.getIds());
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 }

@@ -13,7 +13,6 @@ import com.app.model.Message;
 import com.app.repository.ChatRepository;
 
 @RestController
-//@CrossOrigin(origins = "*")
 public class ChatService {
 	
 	@Autowired
@@ -25,7 +24,7 @@ public class ChatService {
 	public void processMessageFromClient(@Payload Message message, SimpMessageHeaderAccessor headerAccessor, @DestinationVariable("id") String id)
 			throws Exception {
 		ChatEntity chat = ChatEntity.builder().idSender(Long.parseLong(message.getFrom()))
-				.message(message.getText()).idReceiver(Long.parseLong(id)).timestamp(message.getTime()).build();
+				.message(message.getText()).idReceiver(Long.parseLong(id)).timestamp(message.getTime()).status(0).build();
 		ChatEntity chatEntity = chatRepository.save(chat);
 		message.setId(chatEntity.getId());
 		simpMessagingTemplate.convertAndSend("/topic/reply."+id, message);

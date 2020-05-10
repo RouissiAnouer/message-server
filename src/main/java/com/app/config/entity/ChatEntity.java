@@ -41,6 +41,9 @@ public class ChatEntity implements Serializable {
 	@Column(name = "timestamp")
 	@Setter public String timestamp;
 	
+	@Column(name = "status")
+	@Setter public Integer status;
+	
 
 	public String getMessage() {
 		return message;
@@ -77,9 +80,11 @@ public class ChatEntity implements Serializable {
 	}
 
 	public String getTimestamp() {
-		return timestamp;
+		return this.timestamp;
 	}
 
-
+	public Integer getStatus() {
+		return this.status;
+	}
 
 }

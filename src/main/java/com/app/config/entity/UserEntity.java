@@ -60,8 +60,8 @@ public class UserEntity implements Serializable {
 	@OneToMany(targetEntity=ChatEntity.class, mappedBy="idReceiver", fetch=FetchType.EAGER)
 	@Setter @Getter private Set<ChatEntity> received;
 	
-	@ManyToMany(targetEntity=Role.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @Getter @Setter private Set<Role> roles;
+	@ManyToMany(targetEntity=RoleEntity.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @Getter @Setter private Set<RoleEntity> roles;
 	
 	@JoinColumn(name="idSender")
     public Set<ChatEntity> getChats() {

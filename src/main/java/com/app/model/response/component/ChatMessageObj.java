@@ -9,5 +9,6 @@ public class ChatMessageObj {
 	@Getter @Setter private String message;
 	@Getter @Setter private Long id;
 	@Getter @Setter private String time;
+	@Getter @Setter private boolean read;
 
 }

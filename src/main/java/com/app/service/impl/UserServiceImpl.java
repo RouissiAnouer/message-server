@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.app.config.entity.Role;
+import com.app.config.entity.RoleEntity;
 import com.app.config.entity.UserEntity;
 import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements IUserService {
 		if (role.equalsIgnoreCase("ADMIN")) {
 			user.setRoles(new HashSet<>(roleRepository.findAll()));
 		} else {
-			Set<Role> roles = new HashSet<>();
+			Set<RoleEntity> roles = new HashSet<>();
 			roles.add(roleRepository.findByName(role).get());
 			user.setRoles(roles);
 		}
@@ -59,7 +59,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public void createRole(String string) {
-		Role role = new Role(string);
+		RoleEntity role = new RoleEntity(string);
 		roleRepository.save(role);
 	}
 

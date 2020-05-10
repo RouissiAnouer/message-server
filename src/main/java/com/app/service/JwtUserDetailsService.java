@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.app.config.entity.Role;
+import com.app.config.entity.RoleEntity;
 import com.app.config.entity.UserEntity;
 import com.app.repository.UserRepository;
 
@@ -32,7 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException(username);
 
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-		for (Role role : userOpt.get().getRoles()) {
+		for (RoleEntity role : userOpt.get().getRoles()) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		}
 
