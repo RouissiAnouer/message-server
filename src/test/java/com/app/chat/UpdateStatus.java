@@ -1,7 +1,6 @@
 package com.app.chat;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
