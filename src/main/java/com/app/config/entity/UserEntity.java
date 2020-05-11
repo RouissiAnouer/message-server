@@ -55,6 +55,9 @@ public class UserEntity implements Serializable {
 	@Column(name = "connected")
 	@Setter private Integer connected;
 	
+	@Column(name = "avatar")
+	@Setter private String avatar;
+	
 	@Column(name = "chats")
 	@OneToMany(targetEntity=ChatEntity.class, mappedBy="idSender", fetch=FetchType.EAGER)
 	private Set<ChatEntity> chats;
