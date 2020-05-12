@@ -1,6 +1,7 @@
 package com.app.config.entity;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -55,9 +56,6 @@ public class UserEntity implements Serializable {
 	@Column(name = "connected")
 	@Setter private Integer connected;
 	
-	@Column(name = "avatar")
-	@Setter private String avatar;
-	
 	@Column(name = "chats")
 	@OneToMany(targetEntity=ChatEntity.class, mappedBy="idSender", fetch=FetchType.EAGER)
 	private Set<ChatEntity> chats;
@@ -68,6 +66,9 @@ public class UserEntity implements Serializable {
 	
 	@ManyToMany(targetEntity=RoleEntity.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @Getter @Setter private Set<RoleEntity> roles;
+	
+	@Column(name = "IMAGE")
+	private Blob image;
 	
 	@JoinColumn(name="idSender")
     public Set<ChatEntity> getChats() {
@@ -116,5 +117,14 @@ public class UserEntity implements Serializable {
 				.build();
 		return entity;
 	}
+
+	public Blob getImage() {
+		return image;
+	}
+
+	public void setImage(Blob image) {
+		this.image = image;
+	}
+
 
 }

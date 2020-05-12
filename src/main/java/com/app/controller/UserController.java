@@ -1,23 +1,25 @@
 package com.app.controller;
 
+import java.io.IOException;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.config.entity.UserEntity;
-import com.app.model.request.UploadImageRequest;
 import com.app.model.response.UserInfoResponse;
 import com.app.repository.UserRepository;
 import com.app.service.IUserService;
@@ -71,10 +73,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, path = "/uploadimage")
-	public ResponseEntity<?> uploadImage(HttpServletRequest r, @RequestBody UploadImageRequest request) {
-		UserEntity user = userService.findByUsername(request.getUsername());
+	public ResponseEntity<?> uploadImage(HttpServletRequest r, @RequestParam("image") MultipartFile file) throws IOException {
+		UserEntity user = userService.findByUsername(file.getOriginalFilename());
 		if (user != null) {
-			user.setAvatar(request.getImage());
+			Blob image = BlobProxy.generateProxy(file.getBytes());
+			user.setImage(image);
 			userRepository.save(user);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
