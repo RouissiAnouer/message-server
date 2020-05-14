@@ -67,7 +67,7 @@ public class UserEntity implements Serializable {
 	@ManyToMany(targetEntity=RoleEntity.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @Getter @Setter private Set<RoleEntity> roles;
 	
-	@Column(name = "IMAGE")
+	@Column(name = "avatar")
 	private Blob image;
 	
 	@JoinColumn(name="idSender")

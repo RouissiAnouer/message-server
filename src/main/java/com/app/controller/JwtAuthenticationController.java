@@ -60,6 +60,7 @@ public class JwtAuthenticationController {
 				.userName(userInfo.getUserName())
 				.id(userInfo.getId())
 				.expiredIn(jwtTokenUtil.getExpirationDateFromToken(token).toInstant().getEpochSecond())
+				.avatar(userInfo.getImage())
 				.build();
 		return new ResponseEntity<JwtResponse>(response, HttpStatus.OK);
 	}

@@ -1,6 +1,9 @@
 package com.app.model.response;
 
 import java.io.Serializable;
+import java.sql.Blob;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +20,7 @@ public class JwtResponse implements Serializable {
 	@Getter @Setter private Long expiredIn;
 	@Getter @Setter private String tokenType;
 	@Getter @Setter private Long id;
+	@JsonProperty(value = "userAvatar")
+	@Getter @Setter private Blob avatar;
 
 }

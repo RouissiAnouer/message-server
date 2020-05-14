@@ -46,6 +46,7 @@ public class UserController {
 					.received(new ArrayList<>(userOpt.getReceived()))
 					.sent(new ArrayList<>(userOpt.getChats()))
 					.userName(userOpt.getUserName())
+					.avatar(userOpt.getImage())
 					.build();
 			return ResponseEntity.ok(obj);
 		} else {
