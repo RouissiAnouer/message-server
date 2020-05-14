@@ -41,6 +41,7 @@ public class UserServiceImpl implements IUserService {
 			roles.add(roleRepository.findByName(role).get());
 			user.setRoles(roles);
 		}
+		user.setConnected(0);
 		UserEntity userCreated = userRepository.save(user);
 		return userCreated;
 	}

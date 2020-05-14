@@ -1,7 +1,6 @@
 package com.app.model.response;
 
 import java.io.Serializable;
-import java.sql.Blob;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
