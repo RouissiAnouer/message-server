@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import java.sql.Blob;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,8 +61,9 @@ public class JwtAuthenticationController {
 				.userName(userInfo.getUserName())
 				.id(userInfo.getId())
 				.expiredIn(jwtTokenUtil.getExpirationDateFromToken(token).toInstant().getEpochSecond())
+				.userAvatar(userInfo.getPhotoBase64())
 				.build();
-		return new ResponseEntity<JwtResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)

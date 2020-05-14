@@ -1,6 +1,7 @@
 package com.app.model.response;
 
 import java.io.Serializable;
+import java.sql.Blob;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class JwtResponse implements Serializable {
 	@Getter @Setter private Long expiredIn;
 	@Getter @Setter private String tokenType;
 	@Getter @Setter private Long id;
+	@Getter @Setter private String userAvatar;
 
 }
