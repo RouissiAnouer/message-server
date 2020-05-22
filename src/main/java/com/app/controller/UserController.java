@@ -2,6 +2,7 @@ package com.app.controller;
 
 import java.io.IOException;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class UserController {
 	UserRepository userRepository;
 
 	@RequestMapping(method = RequestMethod.GET, path = "/userinfo")
-	public ResponseEntity<UserInfoResponse> getUser(HttpServletRequest r, @RequestParam String email) {
+	public ResponseEntity<UserInfoResponse> getUser(HttpServletRequest r, @RequestParam String email) throws SQLException {
 		UserEntity userOpt = userService.findByUsername(email);
 		
 		if (userOpt != null) {
@@ -43,10 +44,8 @@ public class UserController {
 					.familyName(userOpt.getLastName())
 					.givenName(userOpt.getFirstName())
 					.id(userOpt.getId())
-					.received(new ArrayList<>(userOpt.getReceived()))
-					.sent(new ArrayList<>(userOpt.getChats()))
 					.userName(userOpt.getUserName())
-					.avatar(userOpt.getImage())
+					.userAvatar(userOpt.getPhotoBase64())
 					.build();
 			return ResponseEntity.ok(obj);
 		} else {
