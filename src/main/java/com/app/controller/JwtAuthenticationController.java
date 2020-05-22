@@ -1,6 +1,5 @@
 package com.app.controller;
 
-import java.sql.Blob;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
