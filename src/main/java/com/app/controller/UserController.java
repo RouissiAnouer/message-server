@@ -59,14 +59,21 @@ public class UserController {
 		List<UserEntity> newList = users.stream().filter(user -> !user.getUserName().equalsIgnoreCase(username)).collect(Collectors.toList());
 		List<UserInfoResponse> response = new ArrayList<>();
 		newList.forEach(user -> {
-			UserInfoResponse obj = UserInfoResponse.builder()
-					.familyName(user.getLastName())
-					.givenName(user.getFirstName())
-					.id(user.getId())
-					.received(new ArrayList<>(user.getReceived()))
-					.sent(new ArrayList<>(user.getChats()))
-					.userName(user.getUserName())
-					.build();
+			UserInfoResponse obj;
+			try {
+				obj = UserInfoResponse.builder()
+						.familyName(user.getLastName())
+						.givenName(user.getFirstName())
+						.id(user.getId())
+						.received(new ArrayList<>(user.getReceived()))
+						.sent(new ArrayList<>(user.getChats()))
+						.userName(user.getUserName())
+						.userAvatar(user.getPhotoBase64())
+						.build();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				obj = null;
+			}
 			response.add(obj);
 		});
 		return new ResponseEntity<>(response, HttpStatus.OK);

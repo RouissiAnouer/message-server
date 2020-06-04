@@ -34,7 +34,6 @@ public class JwtRequestFilter extends OncePerRequestFilter  {
 			response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 			response.setHeader("Access-Control-Allow-Headers",
 					"Origin, X-Requested-With, Content-Range, Content-Disposition, Content-Type, Authorization, X-CSRF-TOKEN");
-			System.out.println(request.getRequestURI());
 
 			final String requestTokenHeader = request.getHeader("Authorization");
 			String username = null;
