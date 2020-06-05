@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.app.model.request.SignUpRequest;
@@ -86,6 +87,12 @@ public class UserEntity implements Serializable {
 	@Lob
 	@Column(name = "avatar")
 	private Blob image;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cover_profile_table_id", referencedColumnName = "id")
+	@Getter
+	@Setter
+	private CoverProfileEntity cover;
 
 	@JoinColumn(name = "idSender")
 	public Set<ChatEntity> getChats() {

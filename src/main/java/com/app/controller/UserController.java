@@ -5,6 +5,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.app.config.entity.CoverProfileEntity;
 import com.app.config.entity.UserEntity;
 import com.app.model.response.UserInfoResponse;
+import com.app.repository.UserCoverRepository;
 import com.app.repository.UserRepository;
 import com.app.service.IUserService;
 
@@ -34,6 +37,8 @@ public class UserController {
 	IUserService userService;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	UserCoverRepository userCoverRepository;
 
 	@RequestMapping(method = RequestMethod.GET, path = "/userinfo")
 	public ResponseEntity<UserInfoResponse> getUser(HttpServletRequest r, @RequestParam String email) throws SQLException {
@@ -47,6 +52,9 @@ public class UserController {
 					.userName(userOpt.getUserName())
 					.userAvatar(userOpt.getPhotoBase64())
 					.build();
+			if (userOpt.getCover() != null) {
+				obj.setCover(userOpt.getCover().getPhotoBase64());
+			}
 			return ResponseEntity.ok(obj);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -70,6 +78,9 @@ public class UserController {
 						.userName(user.getUserName())
 						.userAvatar(user.getPhotoBase64())
 						.build();
+				if (user.getCover() != null) {
+					obj.setCover(user.getCover().getPhotoBase64());
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 				obj = null;
@@ -79,13 +90,33 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, path = "/uploadimage")
+	@RequestMapping(method = RequestMethod.PUT, path = "/image/profile")
 	public ResponseEntity<?> uploadImage(HttpServletRequest r, @RequestParam("image") MultipartFile file) throws IOException {
 		UserEntity user = userService.findByUsername(file.getOriginalFilename());
 		if (user != null) {
 			Blob image = BlobProxy.generateProxy(file.getBytes());
 			user.setImage(image);
 			userRepository.save(user);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, path = "/image/cover")
+	public ResponseEntity<?> uploadCover(HttpServletRequest r, @RequestParam("image") MultipartFile file) throws IOException {
+		UserEntity user = userService.findByUsername(file.getOriginalFilename());
+		if (user != null) {
+			Blob image = BlobProxy.generateProxy(file.getBytes());
+			if (user.getCover() == null) {		
+				CoverProfileEntity entity = CoverProfileEntity.builder().cover(image).user(user).build();
+				user.setCover(entity);
+				userRepository.save(user);
+			} else {
+				Optional<CoverProfileEntity> coverOpt = userCoverRepository.findById(user.getCover().getId());
+				if (coverOpt.isPresent()) {
+					coverOpt.get().setCover(image);
+					userCoverRepository.save(coverOpt.get());
+				}
+			}
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
