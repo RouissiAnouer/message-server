@@ -25,4 +25,6 @@ public class UserInfoResponse implements Serializable {
 	@Getter @Setter private Long id;
 	@Getter @Setter private List<ChatEntity> sent;
 	@Getter @Setter private List<ChatEntity> received;
+	@Getter @Setter private String userAvatar;
+	@Getter @Setter private String cover;
 }

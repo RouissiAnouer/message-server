@@ -7,9 +7,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.app.config.entity.UserEntity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class UserPrincipal implements UserDetails {
 	
-	private UserEntity user;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3892584258203188415L;
+	@Getter @Setter private UserEntity user;
 	
 	public UserPrincipal(UserEntity user) {
 		this.user = user;

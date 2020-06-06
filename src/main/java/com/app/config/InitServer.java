@@ -11,6 +11,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 import com.app.config.SessionChannel.RmeSessionChannelInterceptor;
 
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSocketMessageBroker
 public class InitServer extends AbstractWebSocketMessageBrokerConfigurer {

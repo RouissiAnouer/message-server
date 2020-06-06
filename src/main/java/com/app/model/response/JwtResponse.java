@@ -17,5 +17,6 @@ public class JwtResponse implements Serializable {
 	@Getter @Setter private Long expiredIn;
 	@Getter @Setter private String tokenType;
 	@Getter @Setter private Long id;
+	@Getter @Setter private String userAvatar;
 
 }

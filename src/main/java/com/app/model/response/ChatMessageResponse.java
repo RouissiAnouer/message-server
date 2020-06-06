@@ -13,5 +13,6 @@ public class ChatMessageResponse {
 	
 	@Getter @Setter private List<ChatMessageObj> received;
 	@Getter @Setter private List<ChatMessageObj> sent;
+	@Getter @Setter private String avatar;
 
 }
