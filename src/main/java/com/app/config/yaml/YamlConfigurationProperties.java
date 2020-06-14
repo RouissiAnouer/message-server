@@ -10,6 +10,6 @@ import lombok.Setter;
 @ConfigurationProperties(ignoreUnknownFields = true)
 public class YamlConfigurationProperties {
 	
-	@Getter @Setter private ChatApllicationProp application;
+	@Getter @Setter private ChatApplicationProp application;
 
 }

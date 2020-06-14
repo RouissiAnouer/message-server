@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class ChatApllicationProp {
+public class ChatApplicationProp {
 	
 	@Getter @Setter private DBProperties db;
 
