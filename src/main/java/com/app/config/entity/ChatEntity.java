@@ -1,6 +1,9 @@
 package com.app.config.entity;
 
 import java.io.Serializable;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Base64;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,13 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-<<<<<<< Updated upstream
-=======
 import com.app.controller.config.ChatAppConstant;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
->>>>>>> Stashed changes
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -45,26 +45,20 @@ public class ChatEntity implements Serializable {
 	@Column(name = "message")
 	public String message;
 	
-<<<<<<< Updated upstream
-=======
 	@Column(name = "file_message")
 	public Blob fileMessage;
 	
->>>>>>> Stashed changes
 	@Column(name = "timestamp")
 	@Setter public String timestamp;
 	
 	@Column(name = "status")
 	@Setter public Integer status;
-<<<<<<< Updated upstream
-=======
 	
 	@Column(name = "file_type")
 	@Getter @Setter private String fileType;
 	
 	@Column(name = "type")
 	@Getter @Setter private String type;
->>>>>>> Stashed changes
 	
 
 	public String getMessage() {
@@ -109,8 +103,6 @@ public class ChatEntity implements Serializable {
 		return this.status;
 	}
 
-<<<<<<< Updated upstream
-=======
 	public Blob getFileMessage() {
 		return fileMessage;
 	}
@@ -136,5 +128,4 @@ public class ChatEntity implements Serializable {
 		}
 	}
 
->>>>>>> Stashed changes
 }
