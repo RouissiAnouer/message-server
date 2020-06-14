@@ -8,6 +8,7 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 import com.app.config.SessionChannel.RmeSessionChannelInterceptor;
 
@@ -36,4 +37,10 @@ public class InitServer extends AbstractWebSocketMessageBrokerConfigurer {
 	ChannelInterceptor rmeSessionChannelInterceptor() {
 		return new RmeSessionChannelInterceptor();
 	}
+	
+	@Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        registration.setMessageSizeLimit(50 * 1024 * 1024);
+        registration.setSendBufferSizeLimit(50 * 1024 * 1024);
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.config.entity.ChatEntity;
 import com.app.config.entity.UserEntity;
+import com.app.controller.config.ChatAppConstant;
 import com.app.model.response.AllChatsResponse;
 import com.app.model.response.ChatMessageResponse;
 import com.app.model.response.component.ChatMessageObj;
@@ -39,14 +40,36 @@ public class ChatServiceImpl implements IChatService {
 		}
 		List<ChatMessageObj> listSent = new ArrayList<>();
 		messageSent.forEach(msg -> {
-			ChatMessageObj obj = ChatMessageObj.builder().id(msg.getId()).message(msg.getMessage())
-					.time(msg.getTimestamp()).read((msg.getStatus() == 1)).build();
+			String message = null;
+			if (msg.getType().equalsIgnoreCase(ChatAppConstant.TEXT)) {
+				message = msg.getMessage();
+			} else {
+				try {
+					message = msg.getFileMessageBase64();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			ChatMessageObj obj = ChatMessageObj.builder().id(msg.getId()).message(message)
+					.time(msg.getTimestamp()).read((msg.getStatus() == 1)).type(msg.getType()).build();
 			listSent.add(obj);
 		});
 		List<ChatMessageObj> listReceived = new ArrayList<>();
 		messageReceived.forEach(msg -> {
-			ChatMessageObj obj = ChatMessageObj.builder().id(msg.getId()).message(msg.getMessage())
-					.time(msg.getTimestamp()).read((msg.getStatus() == 1)).build();
+			String message = null;
+			if (msg.getType().equalsIgnoreCase(ChatAppConstant.TEXT)) {
+				message = msg.getMessage();
+			} else {
+				try {
+					message = msg.getFileMessageBase64();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			ChatMessageObj obj = ChatMessageObj.builder().id(msg.getId()).message(message)
+					.time(msg.getTimestamp()).read((msg.getStatus() == 1)).type(msg.getType()).build();
 			listReceived.add(obj);
 		});
 		ChatMessageResponse response = ChatMessageResponse.builder().received(listReceived).sent(listSent).avatar(avatar).build();
@@ -65,7 +88,11 @@ public class ChatServiceImpl implements IChatService {
 			long count = newResp.stream().count();
 			long messagesNotRead[] = {0};
 			if (count > 0) {
-				message = newResp.stream().skip(count - 1).findFirst().get().getMessage();
+				if (newResp.stream().skip(count - 1).findFirst().get().getMessage() == null) {
+					message = ChatAppConstant.FILE;
+				} else {
+					message = newResp.stream().skip(count - 1).findFirst().get().getMessage();
+				}
 				newResp.forEach(msg -> {
 					if (msg.getStatus() == 0) {
 						messagesNotRead[0]++;

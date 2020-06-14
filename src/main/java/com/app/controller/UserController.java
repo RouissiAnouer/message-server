@@ -73,8 +73,6 @@ public class UserController {
 						.familyName(user.getLastName())
 						.givenName(user.getFirstName())
 						.id(user.getId())
-						.received(new ArrayList<>(user.getReceived()))
-						.sent(new ArrayList<>(user.getChats()))
 						.userName(user.getUserName())
 						.userAvatar(user.getPhotoBase64())
 						.build();
