@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.app.controller.config.ChatAppConstant;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -114,15 +113,9 @@ public class ChatEntity implements Serializable {
 	@JsonProperty("fileMessageConvert")
 	public String getFileMessageBase64() throws SQLException {
 		if (type != null) {
-			String typeMessage = null;
-			int blobLength = (int) fileMessage.length();
-			if (type.equalsIgnoreCase(ChatAppConstant.IMAGE)) {
-				typeMessage = "";
-			} else {
-				typeMessage = "data:".concat(type).concat(";base64,");
-			}
-			String imagetToReturn = typeMessage + new String(Base64.getDecoder().decode(fileMessage.getBytes(1, blobLength)));
-			return imagetToReturn;
+			int blobLength = (int) fileMessage.length();	
+			String imageToReturn = new String(Base64.getDecoder().decode(fileMessage.getBytes(1, blobLength)));
+			return imageToReturn;
 		} else {
 			return null;
 		}
