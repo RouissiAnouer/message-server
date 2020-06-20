@@ -15,7 +15,7 @@ import com.app.config.SessionChannel.RmeSessionChannelInterceptor;
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSocketMessageBroker
-public class InitServer extends AbstractWebSocketMessageBrokerConfigurer {
+public class InitSocketServer extends AbstractWebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
