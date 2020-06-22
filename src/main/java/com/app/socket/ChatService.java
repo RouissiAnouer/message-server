@@ -67,5 +67,21 @@ public class ChatService {
 
 		simpMessagingTemplate.convertAndSend("/topic/reply." + id, message);
 	}
+	
+	@MessageMapping("/video/{id}")
+	public void sendVideoToUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor,
+			@DestinationVariable("id") String id) throws Exception {
+		
+		byte[] dataBytes = Base64.getEncoder().encode(message.getText().getBytes());
+		Blob image = BlobProxy.generateProxy(dataBytes);
+				
+		ChatEntity chat = ChatEntity.builder().idSender(Long.parseLong(message.getFrom()))
+				.idReceiver(Long.parseLong(id)).timestamp(message.getTime()).status(0).fileMessage(image)
+				.type(ChatAppConstant.VIDEO).build();
+		ChatEntity chatEntity = chatRepository.save(chat);
+		message.setId(chatEntity.getId());
+
+		simpMessagingTemplate.convertAndSend("/topic/reply." + id, message);
+	}
 
 }
