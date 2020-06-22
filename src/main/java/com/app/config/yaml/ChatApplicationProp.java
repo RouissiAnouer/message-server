@@ -7,6 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ChatApplicationProp {
 	
-	@Getter @Setter private DBProperties db;
+	@Getter @Setter private DBProperties dbSQL;
+	@Getter @Setter private NoSQLDBProperties dbNoSQL;
 
 }

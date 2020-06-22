@@ -22,8 +22,10 @@ server:
   port: 8088
 
 application:
-  db:
+  db-sQL:
     driverClassName: "com.mysql.cj.jdbc.Driver"
     urlDB: "jdbc:mysql://localhost:${port:3308}/chat_app?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
     userName: "root"
     password: ${password:}
+  db-no-sQL:
+    url: "mongodb://localhost:27017"

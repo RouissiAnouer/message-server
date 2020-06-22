@@ -9,13 +9,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.config.entity.ChatEntity;
+import com.app.config.entity.ChatEntityMongoDB;
 import com.app.config.entity.UserEntity;
 import com.app.controller.config.ChatAppConstant;
 import com.app.model.response.AllChatsResponse;
 import com.app.model.response.ChatMessageResponse;
 import com.app.model.response.component.ChatMessageObj;
 import com.app.model.response.component.ChatUserObject;
+import com.app.repository.ChatMongoDBRepository;
 import com.app.repository.ChatRepository;
 import com.app.repository.UserRepository;
 import com.app.service.IChatService;
@@ -26,12 +27,14 @@ public class ChatServiceImpl implements IChatService {
 	@Autowired
 	ChatRepository chatRepository;
 	@Autowired
+	ChatMongoDBRepository chatMongoDb;
+	@Autowired
 	UserRepository userRepository;
 
 	@Override
 	public ChatMessageResponse getMyChatWith(Long id, Long idTo) {
-		List<ChatEntity> messageSent = chatRepository.findByIdSenderAndIdReceiver(id, idTo);
-		List<ChatEntity> messageReceived = chatRepository.findByIdReceiverAndIdSender(id, idTo);
+		List<ChatEntityMongoDB> messageSent = chatMongoDb.findByIdSenderAndIdReceiver(id, idTo);
+		List<ChatEntityMongoDB> messageReceived = chatMongoDb.findByIdReceiverAndIdSender(id, idTo);
 		String avatar = null;
 		try {
 			avatar = userRepository.findById(idTo).get().getPhotoBase64();
@@ -44,12 +47,7 @@ public class ChatServiceImpl implements IChatService {
 			if (msg.getType().equalsIgnoreCase(ChatAppConstant.TEXT)) {
 				message = msg.getMessage();
 			} else {
-				try {
-					message = msg.getFileMessageBase64();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				message = msg.getFileMessage();
 			}
 			ChatMessageObj obj = ChatMessageObj.builder().id(msg.getId()).message(message)
 					.time(msg.getTimestamp()).read((msg.getStatus() == 1)).type(msg.getType()).build();
@@ -61,12 +59,7 @@ public class ChatServiceImpl implements IChatService {
 			if (msg.getType().equalsIgnoreCase(ChatAppConstant.TEXT)) {
 				message = msg.getMessage();
 			} else {
-				try {
-					message = msg.getFileMessageBase64();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				message = msg.getFileMessage();
 			}
 			ChatMessageObj obj = ChatMessageObj.builder().id(msg.getId()).message(message)
 					.time(msg.getTimestamp()).read((msg.getStatus() == 1)).type(msg.getType()).build();
@@ -82,8 +75,8 @@ public class ChatServiceImpl implements IChatService {
 		List<ChatUserObject> listOfChats = new ArrayList<>();
 		users.stream().filter(item -> (item.getId() != id)).forEach(item -> {
 			String message = null;
-			List<ChatEntity> resp = chatRepository.findByIdSenderAndIdReceiver(item.getId(), id);
-			List<ChatEntity> newResp = resp.stream().sorted((o1, o2) -> o1.getId().compareTo(o2.getId()))
+			List<ChatEntityMongoDB> resp = chatMongoDb.findByIdSenderAndIdReceiver(item.getId(), id);
+			List<ChatEntityMongoDB> newResp = resp.stream().sorted((o1, o2) -> o1.getId().compareTo(o2.getId()))
 					.collect(Collectors.toList());
 			long count = newResp.stream().count();
 			long messagesNotRead[] = {0};
@@ -117,12 +110,12 @@ public class ChatServiceImpl implements IChatService {
 	}
 
 	@Override
-	public void updateChatStatus(List<Long> ids) {
-		List<ChatEntity> result = chatRepository.findByIdIn(new HashSet<Long>(ids));
+	public void updateChatStatus(List<String> ids) {
+		List<ChatEntityMongoDB> result = chatMongoDb.findByIdIn(new HashSet<String>(ids));
 		result.forEach(item -> {
 			item.setStatus(1);
 		});
-		chatRepository.saveAll(result);
+		chatMongoDb.saveAll(result);
 	}
 
 }

@@ -18,9 +18,9 @@ public class Message {
 	@JsonProperty("text")
     @Getter @Setter private String text;
 	@JsonProperty("time")
-    @Getter @Setter private String time;
+    @Getter @Setter private Long time;
 	@JsonProperty("id")
-    @Getter @Setter private Long id;
+    @Getter @Setter private String id;
 	@JsonProperty("type")
 	@Getter @Setter private String type;
 
