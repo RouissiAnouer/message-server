@@ -1,6 +1,9 @@
 package com.app.config.entity;
 
 import java.io.Serializable;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Base64;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -38,11 +44,20 @@ public class ChatEntity implements Serializable {
 	@Column(name = "message")
 	public String message;
 	
+	@Column(name = "file_message")
+	public Blob fileMessage;
+	
 	@Column(name = "timestamp")
 	@Setter public String timestamp;
 	
 	@Column(name = "status")
 	@Setter public Integer status;
+	
+	@Column(name = "file_type")
+	@Getter @Setter private String fileType;
+	
+	@Column(name = "type")
+	@Getter @Setter private String type;
 	
 
 	public String getMessage() {
@@ -85,6 +100,25 @@ public class ChatEntity implements Serializable {
 
 	public Integer getStatus() {
 		return this.status;
+	}
+
+	public Blob getFileMessage() {
+		return fileMessage;
+	}
+
+	public void setFileMessage(Blob fileMessage) {
+		this.fileMessage = fileMessage;
+	}
+	
+	@JsonProperty("fileMessageConvert")
+	public String getFileMessageBase64() throws SQLException {
+		if (type != null) {
+			int blobLength = (int) fileMessage.length();	
+			String imageToReturn = new String(Base64.getDecoder().decode(fileMessage.getBytes(1, blobLength)));
+			return imageToReturn;
+		} else {
+			return null;
+		}
 	}
 
 }

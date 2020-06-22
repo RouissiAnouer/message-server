@@ -21,6 +21,8 @@ public class Message {
     @Getter @Setter private String time;
 	@JsonProperty("id")
     @Getter @Setter private Long id;
+	@JsonProperty("type")
+	@Getter @Setter private String type;
 
 	
 }

@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: chat-server
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      file-size-threshold: 2KB
+      max-request-size: 215MB
+
+server:
+  port: 8088
+
+application:
+  db:
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    urlDB: "jdbc:mysql://localhost:${port:3308}/chat_app?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
+    userName: "root"
+    password: ${password:}
