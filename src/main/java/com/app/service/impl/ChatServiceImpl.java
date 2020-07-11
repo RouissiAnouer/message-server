@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,11 +82,13 @@ public class ChatServiceImpl implements IChatService {
 			long count = newResp.stream().count();
 			long messagesNotRead[] = {0};
 			if (count > 0) {
-				if (newResp.stream().skip(count - 1).findFirst().get().getMessage() == null) {
-					message = ChatAppConstant.FILE;
-				} else {
-					message = newResp.stream().skip(count - 1).findFirst().get().getMessage();
-				}
+				Optional<ChatEntityMongoDB> firstResponse = newResp.stream().skip(count - 1).findFirst();
+				message = firstResponse.isPresent() ? firstResponse.get().getMessage() : ChatAppConstant.FILE;
+//				if (newResp.stream().skip(count - 1).findFirst().get().getMessage() == null) {
+//					message = ChatAppConstant.FILE;
+//				} else {
+//					message = newResp.stream().skip(count - 1).findFirst().get().getMessage();
+//				}
 				newResp.forEach(msg -> {
 					if (msg.getStatus() == 0) {
 						messagesNotRead[0]++;
