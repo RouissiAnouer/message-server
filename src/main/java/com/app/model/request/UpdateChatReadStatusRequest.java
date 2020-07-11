@@ -16,6 +16,6 @@ import lombok.experimental.SuperBuilder;
 public class UpdateChatReadStatusRequest {
 	
 	@JsonProperty("ids")
-	@Getter @Setter private List<Long> ids;
+	@Getter @Setter private List<String> ids;
 
 }

@@ -11,6 +11,6 @@ public interface IChatService {
 
 	AllChatsResponse getAllChat(long parseLong);
 
-	void updateChatStatus(List<Long> ids);
+	void updateChatStatus(List<String> ids);
 
 }

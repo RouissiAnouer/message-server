@@ -7,8 +7,8 @@ import lombok.Setter;
 public class ChatMessageObj {
 	
 	@Getter @Setter private String message;
-	@Getter @Setter private Long id;
-	@Getter @Setter private String time;
+	@Getter @Setter private String id;
+	@Getter @Setter private Long time;
 	@Getter @Setter private boolean read;
 	@Getter @Setter private String type;
 
