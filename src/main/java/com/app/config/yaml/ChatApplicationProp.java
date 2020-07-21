@@ -9,5 +9,6 @@ public class ChatApplicationProp {
 	
 	@Getter @Setter private DBProperties dbSQL;
 	@Getter @Setter private NoSQLDBProperties dbNoSQL;
+	@Getter @Setter private SocketIoConfig SocketIo;
 
 }
