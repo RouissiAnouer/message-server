@@ -8,5 +8,6 @@ public class SocketIoConfig {
 	@Getter @Setter private String socketIoServer;
 	@Getter @Setter private int socketIoPort;
 	@Getter @Setter private String redisConfigFilePath;
+	@Getter @Setter private boolean redisEnabled;
 
 }

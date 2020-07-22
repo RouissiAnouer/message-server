@@ -33,4 +33,5 @@ application:
   socket-io:
     socket-io-port: 3000
     socket-io-server: "localhost"
-    redis-config-file-path: "/Users/a.rouissi/Dev/redisson.json"
+    redis-config-file-path: "/Users/a.rouissi/Dev/redisson.yaml"
+    redisEnabled: false

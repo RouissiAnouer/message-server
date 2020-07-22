@@ -25,7 +25,7 @@ public class GCWebSocketAuthenticator implements AuthorizationListener {
 	@Override
 	public boolean isAuthorized(HandshakeData handshake) {
 		String token = handshake.getSingleUrlParam("xtoken");
-		if (token.isBlank()) {
+		if (token.isEmpty()) {
 			log.debug("xToken {}", token);
 			log.error("failed authentication Websocket - xtoken null or empty");
 			return false;

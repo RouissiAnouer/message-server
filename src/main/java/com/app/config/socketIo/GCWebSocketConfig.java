@@ -43,7 +43,6 @@ public class GCWebSocketConfig {
 		config.setStoreFactory(storeFactory);
 		config.setAckMode(AckMode.AUTO);
 		SocketIOServer server = new SocketIOServer(config);
-
 		server.start();
 		return server;
 	}
