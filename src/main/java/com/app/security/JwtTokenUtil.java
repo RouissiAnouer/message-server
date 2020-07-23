@@ -13,17 +13,24 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
 @Service
 public class JwtTokenUtil implements Serializable {
 
+	public String getSecret() {
+		return secret;
+	}
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1001049562181105519L;
 	
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
-	@Value("anouerrouissi")
-	private String secret;
+	@Value("qwertyuiopasdfghjklzxcvbnm")
+	public String secret;
 	//retrieve username from jwt token
 	public String getUsernameFromToken(String token) {
 	return getClaimFromToken(token, Claims::getSubject);

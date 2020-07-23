@@ -38,9 +38,6 @@ public class ChatService {
 	@MessageMapping("/image/{id}")
 	public void sendImageToUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor,
 			@DestinationVariable("id") String id) throws Exception {
-		
-//		byte[] dataBytes = Base64.getEncoder().encode(message.getText().getBytes());
-//		Blob image = BlobProxy.generateProxy(dataBytes);
 				
 		ChatEntityMongoDB chat = ChatEntityMongoDB.builder().idSender(Long.parseLong(message.getFrom()))
 				.idReceiver(Long.parseLong(id)).timestamp(message.getTime()).status(0).fileMessage(message.getText())
@@ -54,10 +51,7 @@ public class ChatService {
 	@MessageMapping("/audio/{id}")
 	public void sendAudioToUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor,
 			@DestinationVariable("id") String id) throws Exception {
-		
-//		byte[] dataBytes = Base64.getEncoder().encode(message.getText().getBytes());
-//		Blob image = BlobProxy.generateProxy(dataBytes);
-				
+
 		ChatEntityMongoDB chat = ChatEntityMongoDB.builder().idSender(Long.parseLong(message.getFrom()))
 				.idReceiver(Long.parseLong(id)).timestamp(message.getTime()).status(0).fileMessage(message.getText())
 				.type(ChatAppConstant.AUDIO).build();
@@ -70,10 +64,7 @@ public class ChatService {
 	@MessageMapping("/video/{id}")
 	public void sendVideoToUser(@Payload Message message, SimpMessageHeaderAccessor headerAccessor,
 			@DestinationVariable("id") String id) throws Exception {
-		
-//		byte[] dataBytes = Base64.getEncoder().encode(message.getText().getBytes());
-//		Blob image = BlobProxy.generateProxy(dataBytes);
-				
+
 		ChatEntityMongoDB chat = ChatEntityMongoDB.builder().idSender(Long.parseLong(message.getFrom()))
 				.idReceiver(Long.parseLong(id)).timestamp(message.getTime()).status(0).fileMessage(message.getText())
 				.type(ChatAppConstant.VIDEO).build();
