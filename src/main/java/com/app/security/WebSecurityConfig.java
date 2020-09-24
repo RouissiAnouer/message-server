@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// dont authenticate this particular request
 				.authorizeRequests().antMatchers("/auth/**").permitAll()
 				.antMatchers("/user/**").hasRole("USER")
+				.antMatchers("/push/**").hasRole("USER")
 				.antMatchers("/chat/**").permitAll()
 				.antMatchers("/send/**").permitAll()
 				.antMatchers("/topic/**").permitAll()

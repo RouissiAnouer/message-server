@@ -79,7 +79,7 @@ public class UserEntity implements Serializable {
 	@Getter
 	private Set<ChatEntity> received;
 
-	@ManyToMany(targetEntity = RoleEntity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(targetEntity = RoleEntity.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@Getter
 	@Setter
 	private Set<RoleEntity> roles;

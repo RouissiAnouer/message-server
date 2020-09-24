@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,10 +24,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.config.entity.CoverProfileEntity;
 import com.app.config.entity.UserEntity;
+import com.app.config.firebase.PushNotificationService;
+import com.app.config.firebase.Model.FCMPushObject;
+import com.app.model.request.DeviceTokenRequest;
 import com.app.model.response.UserInfoResponse;
 import com.app.repository.UserCoverRepository;
 import com.app.repository.UserRepository;
 import com.app.service.IUserService;
+import com.google.firebase.messaging.FirebaseMessagingException;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -39,6 +44,8 @@ public class UserController {
 	UserRepository userRepository;
 	@Autowired
 	UserCoverRepository userCoverRepository;
+	@Autowired
+	PushNotificationService pushNotificationService;
 
 	@RequestMapping(method = RequestMethod.GET, path = "/userinfo")
 	public ResponseEntity<UserInfoResponse> getUser(HttpServletRequest r, @RequestParam String email) throws SQLException {
@@ -117,6 +124,17 @@ public class UserController {
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, path = "/push/register")
+	public ResponseEntity<?> registerDeviceToken(HttpServletRequest r, @RequestBody DeviceTokenRequest tokenObject) throws FirebaseMessagingException {
+		FCMPushObject pushObject = FCMPushObject.builder()
+				.packageToSet("com.my.messenger")
+				.topic(tokenObject.getTopic())
+				.build();
+		pushObject.addDeviceTokens(tokenObject.getDeviceToken(), "com.my.messenger");
+		ResponseEntity<?> response = pushNotificationService.register(pushObject);
+		return new ResponseEntity<>(response, response.getStatusCode());
 	}
 
 }
