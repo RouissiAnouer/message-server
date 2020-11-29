@@ -93,6 +93,12 @@ public class UserEntity implements Serializable {
 	@Getter
 	@Setter
 	private CoverProfileEntity cover;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fcm_device_token_id", referencedColumnName = "id")
+	@Getter
+	@Setter
+	private FCMDeviceTokenEntity deviceToken;
 
 	@JoinColumn(name = "idSender")
 	public Set<ChatEntity> getChats() {

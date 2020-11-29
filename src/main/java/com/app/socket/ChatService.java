@@ -21,6 +21,7 @@ import com.app.model.Message;
 import com.app.repository.ChatMongoDBRepository;
 import com.app.repository.ChatRepository;
 import com.app.repository.UserRepository;
+import com.app.service.IUserService;
 
 @RestController
 public class ChatService {
@@ -36,6 +37,9 @@ public class ChatService {
 	FCMPushObject deviceTokensObject;
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	IUserService userService;
 
 	@MessageMapping("/message/{id}")
 	public void processMessageFromClient(@Payload Message message, SimpMessageHeaderAccessor headerAccessor,
@@ -44,27 +48,28 @@ public class ChatService {
 				.idReceiver(Long.parseLong(id)).timestamp(message.getTime()).status(0).type(message.getType()).build();
 		ChatEntityMongoDB chatEntity = chatMongoRepository.save(chat);
 		message.setId(chatEntity.getId());
+
+		
+		UserEntity user = userService.findByUsername(message.getFrom());
+		
+		String username = user.getFirstName() + " " +user.getLastName();
+
 		
 		Map<String, String> data = new HashMap<>();
-		data.put("title", message.getFrom());
+		data.put("title", username);
 		data.put("body", message.getText());
 		
-//		Optional<UserEntity> sender = userRepository.findById(Long.parseLong(message.getFrom()));
-//		
-//		String username = sender.isPresent() ? sender.get().getFirstName() + " " + sender.get().getLastName() : "anonymos";
-//		
-//		FCMPushObject pushObject = FCMPushObject.builder()
-//				.senderUsername(username)
-//				.body(message.getText())
-//				.title(message.getType())
-//				.data(data)
-//				.packageToSet("com.my.messenger")
-//				.topic(id)
-//				.build();
-//		
-//		pushNotificationService.sendTopic(pushObject);
-
+		FCMPushObject push = FCMPushObject.builder()
+				.token(user.getDeviceToken().getDeviceToken())
+				.body(message.getText())
+				.title(username)
+				.data(data)
+				.packageToSet("com.my.messenger")
+				.build();
+		
 		simpMessagingTemplate.convertAndSend("/topic/reply." + id, message);
+		
+		pushNotificationService.sendMessage(push);
 	}
 
 	@MessageMapping("/image/{id}")

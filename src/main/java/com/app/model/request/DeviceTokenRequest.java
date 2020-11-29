@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
 public class DeviceTokenRequest {
 
 	@Getter @Setter private String deviceToken;
-	@Getter @Setter private String topic;
+	@Getter @Setter private String username;
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.config.entity.CoverProfileEntity;
+import com.app.config.entity.FCMDeviceTokenEntity;
 import com.app.config.entity.UserEntity;
 import com.app.config.firebase.PushNotificationService;
 import com.app.config.firebase.Model.FCMPushObject;
@@ -37,7 +38,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 @CrossOrigin(origins = "*")
 @RequestMapping("/user")
 public class UserController {
-	
+
 	@Autowired
 	IUserService userService;
 	@Autowired
@@ -48,17 +49,14 @@ public class UserController {
 	PushNotificationService pushNotificationService;
 
 	@RequestMapping(method = RequestMethod.GET, path = "/userinfo")
-	public ResponseEntity<UserInfoResponse> getUser(HttpServletRequest r, @RequestParam String email) throws SQLException {
+	public ResponseEntity<UserInfoResponse> getUser(HttpServletRequest r, @RequestParam String email)
+			throws SQLException {
 		UserEntity userOpt = userService.findByUsername(email);
-		
+
 		if (userOpt != null) {
-			UserInfoResponse obj = UserInfoResponse.builder()
-					.familyName(userOpt.getLastName())
-					.givenName(userOpt.getFirstName())
-					.id(userOpt.getId())
-					.userName(userOpt.getUserName())
-					.userAvatar(userOpt.getPhotoBase64())
-					.build();
+			UserInfoResponse obj = UserInfoResponse.builder().familyName(userOpt.getLastName())
+					.givenName(userOpt.getFirstName()).id(userOpt.getId()).userName(userOpt.getUserName())
+					.userAvatar(userOpt.getPhotoBase64()).build();
 			if (userOpt.getCover() != null) {
 				obj.setCover(userOpt.getCover().getPhotoBase64());
 			}
@@ -67,22 +65,18 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, path = "/getall")
 	public ResponseEntity<List<UserInfoResponse>> getAllUser(HttpServletRequest r, @RequestParam String username) {
 		List<UserEntity> users = userService.getAll();
-		List<UserEntity> newList = users.stream().filter(user -> !user.getUserName().equalsIgnoreCase(username)).collect(Collectors.toList());
+		List<UserEntity> newList = users.stream().filter(user -> !user.getUserName().equalsIgnoreCase(username))
+				.collect(Collectors.toList());
 		List<UserInfoResponse> response = new ArrayList<>();
 		newList.forEach(user -> {
 			UserInfoResponse obj;
 			try {
-				obj = UserInfoResponse.builder()
-						.familyName(user.getLastName())
-						.givenName(user.getFirstName())
-						.id(user.getId())
-						.userName(user.getUserName())
-						.userAvatar(user.getPhotoBase64())
-						.build();
+				obj = UserInfoResponse.builder().familyName(user.getLastName()).givenName(user.getFirstName())
+						.id(user.getId()).userName(user.getUserName()).userAvatar(user.getPhotoBase64()).build();
 				if (user.getCover() != null) {
 					obj.setCover(user.getCover().getPhotoBase64());
 				}
@@ -94,9 +88,10 @@ public class UserController {
 		});
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, path = "/image/profile")
-	public ResponseEntity<?> uploadImage(HttpServletRequest r, @RequestParam("image") MultipartFile file) throws IOException {
+	public ResponseEntity<?> uploadImage(HttpServletRequest r, @RequestParam("image") MultipartFile file)
+			throws IOException {
 		UserEntity user = userService.findByUsername(file.getOriginalFilename());
 		if (user != null) {
 			Blob image = BlobProxy.generateProxy(file.getBytes());
@@ -105,13 +100,14 @@ public class UserController {
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, path = "/image/cover")
-	public ResponseEntity<?> uploadCover(HttpServletRequest r, @RequestParam("image") MultipartFile file) throws IOException {
+	public ResponseEntity<?> uploadCover(HttpServletRequest r, @RequestParam("image") MultipartFile file)
+			throws IOException {
 		UserEntity user = userService.findByUsername(file.getOriginalFilename());
 		if (user != null) {
 			Blob image = BlobProxy.generateProxy(file.getBytes());
-			if (user.getCover() == null) {		
+			if (user.getCover() == null) {
 				CoverProfileEntity entity = CoverProfileEntity.builder().cover(image).user(user).build();
 				user.setCover(entity);
 				userRepository.save(user);
@@ -125,16 +121,17 @@ public class UserController {
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, path = "/push/register")
-	public ResponseEntity<?> registerDeviceToken(HttpServletRequest r, @RequestBody DeviceTokenRequest tokenObject) throws FirebaseMessagingException {
-		FCMPushObject pushObject = FCMPushObject.builder()
-				.packageToSet("com.my.messenger")
-				.topic(tokenObject.getTopic())
+	public ResponseEntity<?> registerDeviceToken(HttpServletRequest r, @RequestBody DeviceTokenRequest tokenObject)
+			throws FirebaseMessagingException {
+		UserEntity user = userService.findByUsername(tokenObject.getUsername());
+		FCMDeviceTokenEntity fcmDevice = FCMDeviceTokenEntity.builder()
+				.deviceToken(tokenObject.getDeviceToken())
 				.build();
-		pushObject.addDeviceTokens(tokenObject.getDeviceToken(), "com.my.messenger");
-		ResponseEntity<?> response = pushNotificationService.register(pushObject);
-		return new ResponseEntity<>(response, response.getStatusCode());
+		user.setDeviceToken(fcmDevice);
+		userRepository.save(user);
+		return ResponseEntity.noContent().build();
 	}
 
 }
