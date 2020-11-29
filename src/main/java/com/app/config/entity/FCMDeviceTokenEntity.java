@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +35,11 @@ public class FCMDeviceTokenEntity implements Serializable {
 	@Getter @Setter private String deviceToken;
 	
 	@OneToOne(mappedBy = "deviceToken")
-	@Getter @Setter private UserEntity user;
+	@Setter private UserEntity user;
+
+	@JsonIgnore
+	public UserEntity getUser() {
+		return user;
+	}
 
 }
