@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
 import com.app.service.IUserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserServiceImpl implements IUserService {
 
@@ -68,6 +73,26 @@ public class UserServiceImpl implements IUserService {
 	public List<UserEntity> getAll() {
 		List<UserEntity> users = userRepository.findAll();
 		return users;
+	}
+
+
+	@EventListener
+	public void appReady(ApplicationReadyEvent event) {
+		if (roleRepository.count() != 2) {
+			roleRepository.deleteAll();
+			RoleEntity roleUser = new RoleEntity();
+			roleUser.setName("ROLE_USER");
+			
+			RoleEntity roleAdmin = new RoleEntity();
+			roleAdmin.setName("ROLE_ADMIN");
+			
+			roleRepository.save(roleUser);
+			roleRepository.save(roleAdmin);
+			log.info("role setted up successfully");
+			
+		} else {
+			log.info("role already setted");
+		}
 	}
 
 }
