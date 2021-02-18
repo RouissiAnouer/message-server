@@ -24,6 +24,6 @@ server:
 application:
   db:
     driverClassName: "com.mysql.cj.jdbc.Driver"
-    urlDB: "jdbc:mysql://${urldb:lmc8ixkebgaq22lo.chr7pe7iynqr.eu-west-1.rds.amazonaws.com}:${port:3306}/${dbName:qbl8g0n8bxn10ck8}?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
+    urlDB: "jdbc:mysql://${urldb:lmc8ixkebgaq22lo.chr7pe7iynqr.eu-west-1.rds.amazonaws.com}:3306/${dbName:qbl8g0n8bxn10ck8}?createDatabaseIfNotExist=true&useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
     userName: ${username:v6bxrdk9dzmuy7gc}
     password: ${password:fppulvxi0obkyq3z}
